@@ -61,14 +61,12 @@ if prompt := st.chat_input():
 
     tool_calls = response_message.tool_calls
     if tool_calls:
-        # If true the model will return the name of the tool / function to call and the argument(s)  
         tool_call_id = tool_calls[0].id
         tool_function_name = tool_calls[0].function.name
         tool_symbol_string = json.loads(tool_calls[0].function.arguments)['symbol']
 
         chain_of_thought_msg = "Using Alpha Vantage API to fetch data using "
         
-        # Step 3: Call the function and retrieve results. Append the results to the messages list.      
         print(tool_function_name)
         if tool_function_name == 'get_company_overview':
             results = str(client.get_company_overview(tool_symbol_string))
@@ -91,12 +89,10 @@ if prompt := st.chat_input():
         chain_of_thought_msg += (api_function_mapping[tool_function_name] + " for " + tool_symbol_string) 
         st.chat_message("assistant").write(chain_of_thought_msg)
 
-        print(messages)
         response = chat_completion_request(
             messages, tools=openai_tools
         )
         msg = response.choices[0].message.content
-        print(msg) 
 
         st.session_state.messages.append({"role": "assistant", "content": msg})
         st.chat_message("assistant").write(msg)
