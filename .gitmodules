@@ -1,0 +1,3 @@
+[submodule "finance_llm_tools"]
+	path = finance_llm_tools
+	url = https://github.com/RohanNankani/finance_llm_tools
